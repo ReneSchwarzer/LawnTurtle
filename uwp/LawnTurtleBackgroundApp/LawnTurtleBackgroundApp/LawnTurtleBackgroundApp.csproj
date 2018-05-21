@@ -102,51 +102,51 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="Assets\fonts\fa-brands-400.eot">
+    <Content Include="Assets\fonts\fa-brands-400.eot">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <Content Include="Assets\fonts\fa-brands-400.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Assets\fonts\fa-brands-400.woff">
+    <Content Include="Assets\fonts\fa-brands-400.woff">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\fonts\fa-brands-400.woff2">
+    </Content>
+    <Content Include="Assets\fonts\fa-brands-400.woff2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\fonts\fa-regular-400.eot">
+    </Content>
+    <Content Include="Assets\fonts\fa-regular-400.eot">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <Content Include="Assets\fonts\fa-regular-400.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Assets\fonts\fa-regular-400.woff">
+    <Content Include="Assets\fonts\fa-regular-400.woff">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\fonts\fa-regular-400.woff2">
+    </Content>
+    <Content Include="Assets\fonts\fa-regular-400.woff2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\fonts\fa-solid-900.eot">
+    </Content>
+    <Content Include="Assets\fonts\fa-solid-900.eot">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <Content Include="Assets\fonts\fa-solid-900.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Assets\fonts\fa-solid-900.woff">
+    <Content Include="Assets\fonts\fa-solid-900.woff">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\fonts\fa-solid-900.woff2">
+    </Content>
+    <Content Include="Assets\fonts\fa-solid-900.woff2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\fonts\summernote.eot">
+    </Content>
+    <Content Include="Assets\fonts\summernote.eot">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <Content Include="Assets\fonts\summernote.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Assets\fonts\summernote.woff">
+    <Content Include="Assets\fonts\summernote.woff">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="LawnTurtleBackgroundApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

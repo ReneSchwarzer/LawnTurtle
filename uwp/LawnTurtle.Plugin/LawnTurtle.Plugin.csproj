@@ -108,8 +108,20 @@
   <ItemGroup>
     <Compile Include="LawnTurtle.cs" />
     <Compile Include="LawnTurtleFactory.cs" />
-    <Compile Include="Pages\PageOverview.cs" />
+    <Compile Include="Model\AK8963.cs" />
+    <Compile Include="Model\Ak8963Data.cs" />
+    <Compile Include="Model\Ak8963DataRegister.cs" />
+    <Compile Include="Model\Ak8963Register.cs" />
+    <Compile Include="Model\Mpu9250.cs" />
+    <Compile Include="Model\Mpu9250Address.cs" />
+    <Compile Include="Model\Mpu9250Data.cs" />
+    <Compile Include="Model\Mpu9250DataRegister.cs" />
+    <Compile Include="Model\Mpu9250Register.cs" />
+    <Compile Include="Model\ViewModel.cs" />
+    <Compile Include="Pages\PageDashboard.cs" />
+    <Compile Include="Pages\PageMPU9250.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Timer.cs" />
     <EmbeddedResource Include="Properties\LawnTurtle.Plugin.rd.xml" />
   </ItemGroup>
   <ItemGroup>

@@ -186,6 +186,7 @@
     <Compile Include="Controls\TypesTextFormat.cs" />
     <Compile Include="Controls\ValidationEventArgs.cs" />
     <Compile Include="Controls\ValidationResult.cs" />
+    <Compile Include="Pages\PageBlank.cs" />
     <Compile Include="Pages\PageVHCF.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\JQuerry.cs" />
