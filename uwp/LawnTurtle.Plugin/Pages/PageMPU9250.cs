@@ -36,7 +36,7 @@ namespace LawnTurtle.Plugin.Pages
         {
             base.Process();
 
-            var mpu9250 = ViewModel.Instance.Data;
+            var mpu9250 = ViewModel.Instance.Mpu9250Data;
 
             Title = "MPU 9250";
 
@@ -45,6 +45,10 @@ namespace LawnTurtle.Plugin.Pages
             tab.Items.Add(new ControlLink(this) { Text = "MPU 9250", Url = GetUrl(0, "mpu"), Class = "active", Icon = "fas fa-microchip" });
 
             Content.Add(tab);
+
+            Content.Add(new ControlLine(this));
+
+            Content.Add(new ControlText(this) { Text = "WHO AM I = " + ViewModel.Instance.Mpu9250WhoIAm });
 
             Content.Add(new ControlLine(this));
 
@@ -140,6 +144,14 @@ namespace LawnTurtle.Plugin.Pages
                 )
             )
             { Header = "Temperatur" });
+
+
+            Content.Add(new ControlLine(this));
+
+            foreach (var v in ViewModel.Instance.Mpu9250DataSet)
+            {
+                Content.Add(new ControlText(this) { Text = "WHO AM I = " + ViewModel.Instance.Mpu9250WhoIAm });
+            }
         }
 
         /// <summary>

@@ -10,6 +10,7 @@ namespace LawnTurtle.Plugin.Model
     public class ViewModel : INotifyPropertyChanged
     {
         private Mpu9250 MPU { get; set; }
+        private Stack<Mpu9250Data> Mpu9250DataStack { get; set; }
 
         /// <summary>
         /// Instanz des einzigen Modells
@@ -26,8 +27,9 @@ namespace LawnTurtle.Plugin.Model
                 if (m_this == null)
                 {
                     m_this = new ViewModel();
+                    m_this.Mpu9250DataStack = new Stack<Mpu9250Data>();
                     m_this.MPU = new Mpu9250();
-                    m_this.MPU.InitAsync();
+                    m_this.MPU.Init();
                 }
 
                 return m_this;
@@ -40,35 +42,68 @@ namespace LawnTurtle.Plugin.Model
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Bestimmt ob das Viewmodell vollständig inizalisiert ist
+        /// Liefert oder setzt die Daten des MPU925
         /// </summary>
-        private Mpu9250Data _data = new Mpu9250Data();
-        public Mpu9250Data Data
+        private Mpu9250Data _mpu9250data = new Mpu9250Data();
+        public Mpu9250Data Mpu9250Data
         {
             get
             {
-                return _data;
+                return _mpu9250data;
             }
             set
             {
-                if (_data != value)
+                if (_mpu9250data != value)
                 {
-                    _data.Temperature = value.Temperature;
-                    _data.Acceleration_X = value.Acceleration_X;
-                    _data.Acceleration_Y = value.Acceleration_Y;
-                    _data.Acceleration_Z = value.Acceleration_Z;
-                    _data.AngularSpeed_X = value.AngularSpeed_X;
-                    _data.AngularSpeed_Y = value.AngularSpeed_Y;
-                    _data.AngularSpeed_Z = value.AngularSpeed_Z;
+                    _mpu9250data.Temperature = value.Temperature;
+                    _mpu9250data.Acceleration_X = value.Acceleration_X;
+                    _mpu9250data.Acceleration_Y = value.Acceleration_Y;
+                    _mpu9250data.Acceleration_Z = value.Acceleration_Z;
+                    _mpu9250data.AngularSpeed_X = value.AngularSpeed_X;
+                    _mpu9250data.AngularSpeed_Y = value.AngularSpeed_Y;
+                    _mpu9250data.AngularSpeed_Z = value.AngularSpeed_Z;
 
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Data"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Mpu9250Data"));
+
+                    Mpu9250DataStack.Push(value);
+                    if (Mpu9250DataStack.Count > 10000)
+                    {
+                        Mpu9250DataStack.Pop();
+                    }
+
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Mpu9250DataSet"));
                 }
             }
         }
 
+        /// <summary>
+        /// Liefert die letzten Messergebnisse des MPU9250-Sensors
+        /// </summary>
+        public List<Mpu9250Data> Mpu9250DataSet
+        {
+            get
+            {
+                return Mpu9250DataStack.ToList();
+            }
+        }
+
+        /// <summary>
+        /// Liefert oder setzt die Daten des MPU925
+        /// </summary>
+        public string Mpu9250WhoIAm
+        {
+            get
+            {
+                return MPU.WHO_AM_I;
+            }
+        }
+
+        /// <summary>
+        /// Aktualisierung der Daten
+        /// </summary>
         public void Update()
         {
-            Data = MPU.Read();
+            Mpu9250Data = MPU.Read();
         }
     }
 }

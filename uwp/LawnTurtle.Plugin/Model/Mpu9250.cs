@@ -13,9 +13,6 @@ namespace LawnTurtle.Plugin.Model
     /// </summary>
     public class Mpu9250 : IDisposable
     {
-        // Adressen
-        private const byte WHO_AM_I = 0x75;         // WHO AM I
-
         // Optionen
         private const byte SMPLRT_20Hz = 0x13;      // SAMPLE Rate 50ms
         private const byte CONFIG_94Hz = 0x02;      // FILTER accelerometer 94Hz
@@ -33,14 +30,22 @@ namespace LawnTurtle.Plugin.Model
         public Mpu9250Address Address { get; private set; }
 
         /// <summary>
-        /// Liefert oder setzt die Adresse
-        /// </summary>
-        public string WHO_AM_I_Address { get; set; }
-
-        /// <summary>
         /// Liefert oder setzt das I2cDevice
         /// </summary>
         private I2cDevice MPU { get; set; }
+
+        /// <summary>
+        /// Liefert oder setzt die Adresse
+        /// </summary>
+        public string WHO_AM_I
+        {
+            get
+            {
+                var whoAmI = new byte[1];
+                MPU.WriteRead(new byte[] { (byte)Mpu9250Register.WHO_AM_I }, whoAmI); // Should return 0x71
+                return BitConverter.ToString(whoAmI);
+            }
+        }
 
         /// <summary>
         /// Konstruktor
@@ -62,24 +67,20 @@ namespace LawnTurtle.Plugin.Model
         /// <summary>
         /// Initialisierung
         /// </summary>
-        public async void InitAsync()
+        public void Init()
         {
             var settings = new I2cConnectionSettings((int)Address);
             settings.BusSpeed = I2cBusSpeed.FastMode;
 
-            var controller = await I2cController.GetDefaultAsync();
+            var controller = I2cController.GetDefaultAsync().GetResults();
             MPU = controller.GetDevice(settings);
 
             MPU.Write(new byte[] { (byte)Mpu9250Register.SMPLRT_DIV, SMPLRT_20Hz });
             MPU.Write(new byte[] { (byte)Mpu9250Register.CONFIG, CONFIG_94Hz });
             MPU.Write(new byte[] { (byte)Mpu9250Register.GYRO_CONFIG, GYRO_CONFIG_500 });
             MPU.Write(new byte[] { (byte)Mpu9250Register.ACCEL_CONFIG, ACCEL_CONFIG_4g });
-            MPU.Write(new byte[] { (byte)Mpu9250Register.BYPASS, BYPASS_ENABLED });
-            MPU.Write(new byte[] { (byte)Mpu9250Register.PWR_MNGMT_1, PWR_MNGMT_ZCLOCK });
-
-            var whoAmI = new byte[1];
-            MPU.WriteRead(new byte[] { WHO_AM_I }, whoAmI); // Should return 0x71
-            WHO_AM_I_Address = BitConverter.ToString(whoAmI);
+            MPU.Write(new byte[] { (byte)Mpu9250Register.INT_PIN_CFG, BYPASS_ENABLED });
+            MPU.Write(new byte[] { (byte)Mpu9250Register.PWR_MGMT_1, PWR_MNGMT_ZCLOCK });
 
             Calibrate();
         }
@@ -91,19 +92,19 @@ namespace LawnTurtle.Plugin.Model
         {
             // reset device
             // Write a one to bit 7 reset bit; toggle reset device
-            MPU.Write(new byte[] { (byte)Mpu9250Register.PWR_MNGMT_1, 0x80 });
+            MPU.Write(new byte[] { (byte)Mpu9250Register.PWR_MGMT_1, 0x80 });
             Thread.Sleep(100);
 
             // get stable time source; Auto select clock source to be PLL gyroscope
             // reference if ready else use the internal oscillator, bits 2:0 = 001
-            MPU.Write(new byte[] { (byte)Mpu9250Register.PWR_MNGMT_1, 0x01 });
-            MPU.Write(new byte[] { (byte)Mpu9250Register.PWR_MNGMT_2, 0x00 });
+            MPU.Write(new byte[] { (byte)Mpu9250Register.PWR_MGMT_1, 0x01 });
+            MPU.Write(new byte[] { (byte)Mpu9250Register.PWR_MGMT_2, 0x00 });
             Thread.Sleep(200);
 
             // Configure device for bias calculation
             MPU.Write(new byte[] { (byte)Mpu9250Register.INT_ENABLE, 0x00 });   // Disable all interrupts
             MPU.Write(new byte[] { (byte)Mpu9250Register.FIFO_EN, 0x00 });      // Disable FIFO
-            MPU.Write(new byte[] { (byte)Mpu9250Register.PWR_MNGMT_1, 0x00 });  // Turn on internal clock source
+            MPU.Write(new byte[] { (byte)Mpu9250Register.PWR_MGMT_1, 0x00 });   // Turn on internal clock source
             MPU.Write(new byte[] { (byte)Mpu9250Register.I2C_MST_CTRL, 0x00 }); // Disable I2C master
             MPU.Write(new byte[] { (byte)Mpu9250Register.USER_CTRL, 0x00 });    // Disable FIFO and I2C master modes
             MPU.Write(new byte[] { (byte)Mpu9250Register.USER_CTRL, 0x0C });    // Reset FIFO and DMP
